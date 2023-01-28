@@ -8,6 +8,8 @@
 </head>
 <body>
     <h1>Hello to "Breakout in JavaScript"</h1>
+
+    <div id="gameOver"></div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
 
     <script>
@@ -74,6 +76,7 @@
 
         function main() {
             setTimeout(function onTick() {
+                
                 clearCanvas();
                 
                 moveBall();
@@ -146,9 +149,17 @@
             if (ball_x == 0 || ball_x == gameCanvas.width - ball_size_x) {
                 ball_speed_x = ball_speed_x * - 1;
                 ball_speed_y = ball_speed_y;
-            } else if (ball_y == 0 || ball_y == gameCanvas.height - ball_size_y) {
+            } else if (ball_y == 0) {
                 ball_speed_x = ball_speed_x;
                 ball_speed_y = ball_speed_y * -1;
+            }
+
+            // Check Game End
+            if (ball_y == gameCanvas.height - ball_size_y) {
+                var gameOver = document.getElementById('gameOver');
+                gameOver.innerHTML = "GAME OVER";
+                gameOver.style.color = 'red';
+                throw new Error("GAME OVER");
             }
 
             // ToDo: Check Brickets collision
