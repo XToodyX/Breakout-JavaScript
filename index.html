@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breakout - JavaScript</title>
+</head>
+<body>
+    <h1>Hello to "Breakout in JavaScript"</h1>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+
+    <script>
+        /** Constants **/
+        const CANVAS_BACKGROUND = 'white';
+        const CANVAS_BORDER_STROKE = 'black';
+
+        /** Paddle **/
+        var paddle_x = 180;
+        const paddle_y = 350; // static
+
+        const paddle_width = 50;
+        const paddle_height = 10;
+
+        /** Brackets **/
+        let brackets = [
+            {x: 100, y: 50},
+            {x: 140, y: 50},
+            {x: 180, y: 50},
+            {x: 220, y: 50},
+            {x: 260, y: 50},
+
+            {x: 100, y: 70},
+            {x: 140, y: 70},
+            {x: 180, y: 70},
+            {x: 220, y: 70},
+            {x: 260, y: 70},
+
+            {x: 100, y: 90},
+            {x: 140, y: 90},
+            {x: 180, y: 90},
+            {x: 220, y: 90},
+            {x: 260, y: 90},
+
+            {x: 100, y: 110},
+            {x: 140, y: 110},
+            {x: 180, y: 110},
+            {x: 220, y: 110},
+            {x: 260, y: 110},
+        ]
+
+        const bracket_size_x = 30;
+        const bracket_size_y = 10;
+
+        // ** Game Ball **/
+
+        let ball_x = 170;
+        let ball_y = 200;
+
+        const ball_size_x = 10;
+        const ball_size_y = 10;
+
+        let ball_speed_x = -5;
+        let ball_speed_y = -5;
+        let ball_speed_default = 5;
+
+        var gameCanvas = document.getElementById('gameCanvas');
+
+        var ctx = gameCanvas.getContext('2d');
+
+        event = document.addEventListener('keydown', movePaddle);
+
+        main()
+
+        function main() {
+            setTimeout(function onTick() {
+                clearCanvas();
+                
+                moveBall();
+                drawBrackets();
+                drawPaddle();
+
+                main();
+            }, 100);
+        }
+
+        /** Canvas Functions **/
+
+        function clearCanvas() {
+            ctx.fillStyle = CANVAS_BACKGROUND;
+            ctx.strokestyle = CANVAS_BORDER_STROKE;
+            ctx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
+            ctx.strokeRect(0, 0, gameCanvas.width, gameCanvas.height);            
+        }
+
+        /** Paddle Functions **/
+
+        function drawPaddle() {
+            ctx.fillStyle = 'black';
+            ctx.fillRect(paddle_x, paddle_y, paddle_width, paddle_height);
+        }
+
+        function movePaddle(event) {
+            const LEFT_KEY = 37;
+            const RIGHT_KEY = 39;
+            const A_KEY = 65;
+            const D_KEY = 68;
+
+            const LEFT_MOVE = LEFT_KEY || A_KEY;
+            const RIGHT_MOVE = RIGHT_KEY || D_KEY;
+
+            const keyCode = event.keyCode;
+
+            if (keyCode == LEFT_MOVE && paddle_x > 0) {
+                paddle_x -= 10;
+            } else if (keyCode == RIGHT_MOVE && paddle_x < gameCanvas.width - paddle_width) {
+                paddle_x += 10;
+            }
+        }
+
+        /** Bracket Functions **/
+
+        function drawBrackets() {
+            brackets.forEach((bracket) => {
+                ctx.fillStyle = 'black';
+                ctx.fillRect(bracket.x, bracket.y, bracket_size_x, bracket_size_y);
+            });
+        }
+
+        /** Ball Functions **/
+
+        function drawBall() {
+            ctx.fillStyle = 'black';
+            ctx.fillRect(ball_x, ball_y, ball_size_x, ball_size_y);
+
+        }
+
+        function moveBall() {
+            checkBallCollistion();
+            
+            drawBall();
+        }
+
+        function checkBallCollistion() {
+            // Check Wall Collistion
+            if (ball_x == 0 || ball_x == gameCanvas.width - ball_size_x) {
+                ball_speed_x = ball_speed_x * - 1;
+                ball_speed_y = ball_speed_y;
+            } else if (ball_y == 0 || ball_y == gameCanvas.height - ball_size_y) {
+                ball_speed_x = ball_speed_x;
+                ball_speed_y = ball_speed_y * -1;
+            }
+
+            // ToDo: Check Brickets collision
+            brackets.forEach((bracket) => {
+                if (
+                   (ball_y + 10 == bracket.y && 
+                    ball_x + 10 >= bracket.x && ball_x <= bracket.x + bracket_size_x) 
+                    ||
+                    (ball_y == bracket.y + 10 && 
+                    ball_x >= bracket.x && ball_x <= bracket.x + bracket_size_x)) {
+                
+                    ball_speed_x = ball_speed_x;
+                    ball_speed_y = ball_speed_y * -1;
+
+                    const index = brackets.indexOf(bracket);
+                    brackets.splice(index, 1);
+                } else if (
+                    (ball_x + 10 == bracket.x && ball_y == bracket.y) 
+                    ||
+                    (ball_x == bracket.x + bracket_size_x &&
+                     ball_y == bracket.y))
+                {
+                    ball_speed_x = ball_speed_x * -1;
+                    ball_speed_y = ball_speed_y;
+
+                    const index = array.indexOf(bracket);
+                    array.splice(index, 1);
+                }
+            });
+
+            // Check Paddle collision
+            if (ball_y + 10 == paddle_y && 
+                ball_x + 10 >= paddle_x && ball_x <= paddle_x + paddle_width) {
+                
+                ball_speed_x = ball_speed_x;
+                ball_speed_y = ball_speed_y * -1;
+            }
+
+            ball_x = ball_x - ball_speed_x;
+            ball_y = ball_y - ball_speed_y;
+        }
+
+
+
+    </script>
+</body>
+</html>
