@@ -210,6 +210,16 @@
                 ball_x + 10 >= paddle_x && ball_x <= paddle_x + paddle_width) {
 
                 ball_speed_y = ball_speed_y * -1;
+            } else if (
+                (
+                (ball_x + 10 >= paddle_x && ball_x + 10 <= paddle_x + Math.abs(ball_speed_x)) &&
+                 ball_y + 10 >= paddle_y && ball_y <= paddle_y + 10)
+                 ||
+                (
+                (ball_x <= paddle_x + paddle_width && ball_x >= paddle_x + paddle_width - Math.abs(ball_speed_x)) &&
+                 ball_y + 10 >= paddle_y && ball_y <= paddle_y + 10)) {
+
+                ball_speed_x = ball_speed_x * -1;
             }
         }
     </script>
