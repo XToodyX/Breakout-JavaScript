@@ -9,7 +9,7 @@
 <body>
     <h1>Hello to "Breakout in JavaScript"</h1>
 
-    <div id="gameOver"></div>
+    <div id="gameStatus"></div>
     <canvas id="gameCanvas" width="400" height="400"></canvas>
 
     <script>
@@ -167,11 +167,17 @@
 
         function checkGameEnd() {
             // Check Game End
+            
             if (ball_y === gameCanvas.height - ball_size_y) {
-                const gameOver = document.getElementById('gameOver');
+                const gameOver = document.getElementById('gameStatus');
                 gameOver.innerHTML = "GAME OVER";
                 gameOver.style.color = 'red';
                 throw new Error("GAME OVER");
+            } else if (bricks.length === 0){
+                const gameOver = document.getElementById('gameStatus');
+                gameOver.innerHTML = "Congratulations, you have won :-)";
+                gameOver.style.color = 'green';
+                throw new Error("Congratulations, you have won :-)");
             }
         }
 
