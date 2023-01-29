@@ -62,8 +62,8 @@
         const ball_size_x = 10;
         const ball_size_y = 10;
 
-        let ball_speed_x = -5;
-        let ball_speed_y = -5;
+        let ball_speed_x = -1;
+        let ball_speed_y = -1;
 
         const gameCanvas = document.getElementById('gameCanvas');
 
@@ -83,7 +83,7 @@
                 drawPaddle();
 
                 main();
-            }, 100);
+            }, 10);
         }
 
         /** Canvas Functions **/
@@ -208,24 +208,14 @@
             // Check Paddle collision
             if (ball_y + 10 === paddle_y &&
                 ball_x + 10 >= paddle_x && ball_x <= paddle_x + paddle_width) {
-
-                console.log("Before: ");
-                console.log("Position Ball X: " + ball_speed_x);
-                console.log("Position Ball Y: " + ball_speed_y);
                 
                 if (ball_x + 10 <= (paddle_x + (paddle_width / 2))) {
-                    console.log("Lower");
                     ball_speed_x = Math.abs(ball_speed_x);
                     ball_speed_y = Math.abs(ball_speed_y);
                 } else {
-                    console.log('Higher');
                     ball_speed_x = Math.abs(ball_speed_x) * -1;
                     ball_speed_y = Math.abs(ball_speed_y);
                 }
-                console.log("After: ");
-                console.log("Position Ball X: " + ball_speed_x);
-                console.log("Position Ball Y: " + ball_speed_y);
-                // ball_speed_y = ball_speed_y * -1;
             } else if (
                 (
                 (ball_x + 10 >= paddle_x && ball_x + 10 <= paddle_x + Math.abs(ball_speed_x)) &&
