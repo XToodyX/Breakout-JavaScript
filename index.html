@@ -183,17 +183,18 @@
                     ball_x + 10 >= brick.x && ball_x <= brick.x + bracket_size_x)
                     ||
                     (ball_y === brick.y + 10 &&
-                    ball_x >= brick.x && ball_x <= brick.x + bracket_size_x)) {
+                    ball_x + 10 >= brick.x && ball_x <= brick.x + bracket_size_x)) {
 
                     ball_speed_y = ball_speed_y * -1;
 
                     const index = bricks.indexOf(brick);
                     bricks.splice(index, 1);
                 } else if (
-                    (ball_x + 10 === brick.x && ball_y === brick.y)
+                    (ball_x + 10 === brick.x && 
+                     ball_y + 10 >= brick.y && ball_y <= brick.y + 10)
                     ||
                     (ball_x === brick.x + bracket_size_x &&
-                     ball_y === brick.y))
+                     ball_y + 10 >= brick.y && ball_y <= brick.y + 10))
                 {
                     ball_speed_x = ball_speed_x * -1;
 
